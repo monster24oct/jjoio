@@ -24,4 +24,11 @@ public class UserDaoImpl implements IUserDao{
 		return false;
 	}
 
+	@Override
+	public String getPassword(String name) throws AirlineException {
+		// TODO Auto-generated method stub
+		String pass="";
+		return pass;
+	}
+
 }
