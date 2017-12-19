@@ -9,8 +9,14 @@ public class BookingDTO {
 	private Date bookingDate;
 	private int noOfPassengers;
 	private String classType;
-	private long creditCardNumber;
 	private double totalFare;
+	private int userId;
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public int getBookingId() {
 		return bookingId;
 	}
@@ -41,12 +47,6 @@ public class BookingDTO {
 	}
 	public void setClassType(String classType) {
 		this.classType = classType;
-	}
-	public long getCreditCardNumber() {
-		return creditCardNumber;
-	}
-	public void setCreditCardNumber(long creditCardNumber) {
-		this.creditCardNumber = creditCardNumber;
 	}
 	public double getTotalFare() {
 		return totalFare;

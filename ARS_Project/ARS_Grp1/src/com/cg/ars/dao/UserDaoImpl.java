@@ -9,12 +9,16 @@ import java.util.List;
 
 import com.cg.ars.dto.BookingDTO;
 import com.cg.ars.dto.FlightDTO;
+import com.cg.ars.dto.PassengerDTO;
 import com.cg.ars.exception.AirlineException;
 import com.cg.ars.util.DBUtil;
 
 public class UserDaoImpl implements IUserDao{
-	static Connection connection = null;	
-	static{
+	Connection connection = null;	
+	
+
+	public UserDaoImpl() {
+		super();
 		connection = DBUtil.getConnect();
 	}
 
@@ -32,6 +36,20 @@ public class UserDaoImpl implements IUserDao{
 		catch (Exception e) {			
 			throw new AirlineException("something went wrong while matching login credential...");
 		}	
+		/*finally
+		{
+			try 
+			{
+				resultSet.close();
+				statement.close();
+				connection.close();
+			} 
+			catch (SQLException e) 
+			{
+				//e.printStackTrace();
+				throw new AirlineException("SQLException occurred");
+			}
+		}*/
 		return 0;
 	}
 
@@ -63,14 +81,28 @@ public class UserDaoImpl implements IUserDao{
 			pass=resultSet.getString("password");		
 		} catch (Exception e) {			
 			throw new AirlineException("something went wrong while matching login credential...");
-		}		
+		}	
+		/*finally
+		{
+			try 
+			{
+				resultSet.close();
+				statement.close();
+				connection.close();
+			} 
+			catch (SQLException e) 
+			{
+				//e.printStackTrace();
+				throw new AirlineException("SQLException occurred");
+			}
+		}*/
 		return pass;
 	}
 	public int getUserId(String name) throws AirlineException {
 		// TODO Auto-generated method stub
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
-		String query = "SELECT userId FROM users WHERE username=?";
+		String query = "SELECT user_Id FROM users WHERE username=?";
 		int userId =0;
 		try {			
 			statement = connection.prepareStatement(query);
@@ -78,10 +110,24 @@ public class UserDaoImpl implements IUserDao{
 			resultSet = statement.executeQuery();
 			//fetch details if result set is not null
 			resultSet.next();
-			userId=Integer.parseInt(resultSet.getString("userId"));		
+			userId=Integer.parseInt(resultSet.getString("user_Id"));		
 		} catch (Exception e) {			
 			throw new AirlineException("something went wrong while getting UserId.");
-		}		
+		}
+		/*finally
+		{
+			try 
+			{
+				resultSet.close();
+				statement.close();
+				connection.close();
+			} 
+			catch (SQLException e) 
+			{
+				//e.printStackTrace();
+				throw new AirlineException("SQLException occurred");
+			}
+		}*/
 		return userId;
 	}
 
@@ -119,7 +165,7 @@ public class UserDaoImpl implements IUserDao{
 			//e.printStackTrace();
 			throw new AirlineException("Something went wrong while fetching showDetails");
 		}
-		finally
+		/*finally
 		{
 			try 
 			{
@@ -132,9 +178,53 @@ public class UserDaoImpl implements IUserDao{
 				//e.printStackTrace();
 				throw new AirlineException("SQLException occurred");
 			}
-		}
+		}*/
 		System.out.println("returning listFlightDto");
 		return listFlightDto;
 	}
 
+	@Override
+	public int addPassenger(PassengerDTO passengerDto) throws AirlineException {
+		// TODO Auto-generated method stub
+		
+		int userId=passengerDto.getUserId();
+		String name = passengerDto.getPassengerName();
+		int age = passengerDto.getPassengerAge();
+		String gender = passengerDto.getPassengerGender();
+		System.out.println(userId+" "+age+ "  "+name+"  "+gender);
+		String query = "INSERT INTO passengers VALUES(?,passIdSequence.nextval,?,?,?)";
+		System.out.println("in addPassengers");
+		PreparedStatement pstmt=null;
+		
+		int records=0;
+		try {	
+			pstmt = connection.prepareStatement(query);
+			pstmt.setInt(1,userId);
+			pstmt.setString(2,name);
+			pstmt.setInt(3,age);
+			pstmt.setString(4,gender);
+			
+			records = pstmt.executeUpdate();
+			System.out.println("query executed");
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			throw new AirlineException("Something went wrong while inserting showDetails");
+		}
+		/*finally
+		{
+			try 
+			{
+				pstmt.close();
+				connection.close();
+			} 
+			catch (SQLException e) 
+			{
+				//e.printStackTrace();
+				throw new AirlineException("SQLException occurred");
+			}
+		}*/
+		return records;
+	}
 }

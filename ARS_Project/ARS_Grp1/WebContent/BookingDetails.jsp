@@ -8,28 +8,27 @@
 </head>
 <body>
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="s"%>
-<form action = >
+<form action = "AirlineController?action=addPassenger" method="post">
 <TABLE border="1">
 <tr>
     <th>UserId</th>
-    <th>Flight ID</th>
+    <th>FlightID</th>
     <th>Name</th>
     <th>Age</th>
     <th>Gender</th>
     </tr>
-    
-<%
-int records=noOfPassengers;
-for(int row=1; row <= records; row++) { %>
     <tr>
-    <td><input type="text" value="${userId}"></td>
-    <td><input type="text"></td>
-    <td><input type="text"></td>
-    <td><input type="text"></td>
-    <td><input type="text"></td>
-    </tr>
-<% } %>
+    <td><input type="text" name="UserId" value="${userId}"></td>
+    <td><input type="text" name="FlightID"></td>
+    <td><input type="text" name="Name"></td>
+    <td><input type="text" name="Age"></td>
+    <td><input type="text" name="Gender"></td>
+  </tr>
 </TABLE>
-</form>>
+<button type="submit">Add User</button>
+</form>
+<form action = "AirlineController?action=success" method = "post">
+	<button> Submit </button>
+</form>
 </body>
 </html>

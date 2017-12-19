@@ -11,21 +11,21 @@
 		<h2>List Of Movie Shows</h2>
 		<table border="1">
 			<tr>
-				<td>Flight ID</td>
-				<td>Airline</td>
-				<td>Source</td>
-				<td>Destination</td>
-				<td>Dept Time</td>
-				<td>Arrival Time</td>
-				<td>Available Seats</td>
-				<td>Business Fare</td>
-				<td>Economy Fare</td>
-				<td></td>
+				<th>Flight ID</th>
+				<th>Airline</th>
+				<th>Source</th>
+				<th>Destination</th>
+				<th>Dept Time</th>
+				<th>Arrival Time</th>
+				<th>Available Seats</th>
+				<th>Business Fare</th>
+				<th>Economy Fare</th>
+				<th>action</th>
 			</tr>
 			
 			<s:forEach var="show" items="${listFlightDto}">
 				<tr>
-					<td><a href ="BookingDetails.jsp">${show.flightId}</a></td>
+					<td>${show.flightId}</td>
 					<td>${show.airline}</td>
 					<td>${show.departureCity}</td>
 					<td>${show.arrivalCity}</td>
@@ -34,7 +34,10 @@
 					<td>${show.noOfSeats}</td>
 					<td>${show.ecoFare}</td>
 					<td>${show.busFare}</td>
-					<td></td>
+					<td><form action = "AirlineController?action=bookingTicket" method="post">
+							<button type="submit">Book</button>
+						</form> 
+					</td>
 				</tr>
 			</s:forEach>
 		</table>

@@ -4,8 +4,22 @@ public class PassengerDTO {
 	
 	private int passengerId;
 	private String passengerName;
-	private String passengerAge;
+	private int passengerAge;
 	private String passengerGender;
+	private int userId;
+	private int flightId;
+	public int getFlightId() {
+		return flightId;
+	}
+	public void setFlightId(int flightId) {
+		this.flightId = flightId;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public int getPassengerId() {
 		return passengerId;
 	}
@@ -18,10 +32,11 @@ public class PassengerDTO {
 	public void setPassengerName(String passengerName) {
 		this.passengerName = passengerName;
 	}
-	public String getPassengerAge() {
+	
+	public int getPassengerAge() {
 		return passengerAge;
 	}
-	public void setPassengerAge(String passengerAge) {
+	public void setPassengerAge(int passengerAge) {
 		this.passengerAge = passengerAge;
 	}
 	public String getPassengerGender() {

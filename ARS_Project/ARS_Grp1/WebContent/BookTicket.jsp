@@ -51,6 +51,11 @@
 			<td><input type="number" name="noOfPassengers"  required></td>
 		</tr>
 		<tr>
+			<td><label>Enter class:</label></td>
+			<td><input type="radio" name="class" value="business" checked>Business<br>
+  				<input type="radio" name="class" value="economy">Economy<br></td>
+		</tr>
+		<tr>
 			<td colspan="2" align="center"><button type="submit">Show Available Flight</button></td>
 		</tr>
 		</table>

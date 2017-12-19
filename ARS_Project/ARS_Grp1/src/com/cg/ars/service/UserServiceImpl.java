@@ -6,6 +6,7 @@ import com.cg.ars.dao.IUserDao;
 import com.cg.ars.dao.UserDaoImpl;
 import com.cg.ars.dto.BookingDTO;
 import com.cg.ars.dto.FlightDTO;
+import com.cg.ars.dto.PassengerDTO;
 import com.cg.ars.exception.AirlineException;
 
 public class UserServiceImpl implements IUserService{
@@ -64,5 +65,11 @@ public class UserServiceImpl implements IUserService{
 	public int getUserId(String name) throws AirlineException {
 		// TODO Auto-generated method stub
 		return userDao.getUserId(name);
+	}
+
+	@Override
+	public int addPassenger(PassengerDTO passengerDto) throws AirlineException {
+		// TODO Auto-generated method stub
+		return userDao.addPassenger(passengerDto);
 	}
 }

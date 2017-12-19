@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cg.ars.dto.BookingDTO;
 import com.cg.ars.dto.FlightDTO;
+import com.cg.ars.dto.PassengerDTO;
 import com.cg.ars.exception.AirlineException;
 
 public interface IUserService {
@@ -14,4 +15,5 @@ public interface IUserService {
 	public String getPassword(String name)throws AirlineException;
 	public List<FlightDTO> getAvailFlights(BookingDTO bookingDto)throws AirlineException;
 	public int getUserId(String name) throws AirlineException;
+	public int addPassenger(PassengerDTO passengerDto)throws AirlineException;
 }

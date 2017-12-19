@@ -31,7 +31,7 @@
 			<td colspan="2" align="center"><button type="submit">Login</button></td>
 		</tr>
 	</table>
-   <div align="right"> <button type="submit">Create a new account</button></div>
+   <div align="right"><button type="submit">Create a new account</button></div>
 </form>
 </body>
 </html>

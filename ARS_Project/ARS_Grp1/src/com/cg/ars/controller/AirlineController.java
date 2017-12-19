@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import com.cg.ars.dto.BookingDTO;
 import com.cg.ars.dto.FlightDTO;
+import com.cg.ars.dto.PassengerDTO;
 import com.cg.ars.dto.UsersDTO;
 import com.cg.ars.exception.AirlineException;
 import com.cg.ars.service.IUserService;
@@ -75,12 +76,11 @@ public class AirlineController extends HttpServlet {
 				int userId = userService.getUserId(name);
 				session.setAttribute("userId", userId);
 				String passData = userService.getPassword(name);
-				System.out.println("*****************"+passData);
 				flag = userServiceImpl.validatePassword(password,passData);
 				if(flag)
 				{
 					System.out.println(flag);
-					RequestDispatcher dispatch=request.getRequestDispatcher("Passenger.jsp");
+					RequestDispatcher dispatch=request.getRequestDispatcher("UserMenu.jsp");
 					dispatch.forward(request, response);
 				}
 				else
@@ -103,8 +103,14 @@ public class AirlineController extends HttpServlet {
 			BookingDTO bookDto = new BookingDTO();
 			int noOfPassengers =Integer.parseInt(request.getParameter("noOfPassengers"));
 			int records=0;
-			session.setAttribute("records",noOfPassengers);
+			String source = request.getParameter("source");
+			String destination = request.getParameter("destination");
 			String departingDate=request.getParameter("departingDate");
+			session.setAttribute("records",noOfPassengers);
+			session.setAttribute("source",source);
+			session.setAttribute("destination", destination);
+			session.setAttribute("departingDate",departingDate);
+			String classType = request.getParameter("class");
 			Date deptDate = null;
 			System.out.println("controller showAvailFlights");
 			try {
@@ -113,10 +119,12 @@ public class AirlineController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			bookDto.setSource(request.getParameter("source"));
-			bookDto.setDestination(request.getParameter("destination"));
+			bookDto.setSource(source);
+			bookDto.setDestination(destination);
 			bookDto.setBookingDate(deptDate);
 			bookDto.setNoOfPassengers(noOfPassengers);
+			bookDto.setClassType(classType);
+			session.setAttribute("classType",classType);
 			List<FlightDTO> listFlightDto = new ArrayList<FlightDTO>();
 			System.out.println("calling to get avail flights");
 			try
@@ -128,15 +136,105 @@ public class AirlineController extends HttpServlet {
 			}
 			catch(Exception e)
 			{
-				
+				System.out.println(e);
 			}
+		}
+		if("bookingTicket".equals(action))
+		{
+			HttpSession session = request.getSession(false);
+			RequestDispatcher dispatch=request.getRequestDispatcher("BookingDetails.jsp");
+			dispatch.forward(request, response);
+		}
+		if("addPassenger".equals(action))
+		{
+			HttpSession session = request.getSession(true);
+			PassengerDTO passengerDto = new PassengerDTO();
+			String userId = request.getParameter("UserId");
+			String flightId = request.getParameter("FlightID");
+			String name = request.getParameter("Name");
+			String age = request.getParameter("Age");
+			String gender = request.getParameter("Gender");
+			passengerDto.setUserId(Integer.parseInt(userId));
+			passengerDto.setFlightId(Integer.parseInt(flightId));
+			passengerDto.setPassengerName(name);
+			passengerDto.setPassengerAge(Integer.parseInt(age));
+			passengerDto.setPassengerGender(gender);
+			System.out.println("Details Added");
+			try {
+				int records = userService.addPassenger(passengerDto);
+			} catch (AirlineException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("passenger added");
+			RequestDispatcher dispatch=request.getRequestDispatcher("BookingDetails.jsp");
+			dispatch.forward(request, response);
+		}
+		if("addUserBooking".equals(action))
+		{
+			HttpSession session = request.getSession(true);
+			BookingDTO bookingDto = new BookingDTO();
+			String source=(String)session.getAttribute("source");
+			String destination=(String)session.getAttribute("destination");
+			String departingDate=(String)session.getAttribute("departingDate");
+			int noOfPassengers =(Integer)session.getAttribute("records");
+			String classType = (String)session.getAttribute("classType");
+			Date deptDate = null;
+			System.out.println("controller showAvailFlights");
+			try {
+				deptDate = new SimpleDateFormat("dd/MM/yyyy").parse(departingDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			bookingDto.setSource(source);
+			bookingDto.setDestination(destination);
+			bookingDto.setBookingDate(deptDate);
+			bookingDto.setNoOfPassengers(noOfPassengers);
+			bookingDto.setClassType(classType);
+			float classFare;
+			if(classType.equals("business"))
+			{
+				classFare=10;
+			}
+			else
+			{
+				classFare = 20;
+			}
+			double fare=noOfPassengers*classFare;
+			bookingDto.setTotalFare(fare);
+			int userID = (Integer)session.getAttribute("userId");
+			bookingDto.setUserId(userID);
 		}
 		if("bookTicket".equals(action))
 		{
-			HttpSession session = request.getSession(false);
 			RequestDispatcher dispatch=request.getRequestDispatcher("BookTicket.jsp");
 			dispatch.forward(request, response);
 		}
+		/*if("viewBooking".equals(action))
+		{
+			RequestDispatcher dispatch=request.getRequestDispatcher("BookTicket.jsp");
+			dispatch.forward(request, response);
+		}
+		if("updateBooking".equals(action))
+		{
+			RequestDispatcher dispatch=request.getRequestDispatcher("BookTicket.jsp");
+			dispatch.forward(request, response);
+		}
+		if("deleteBooking".equals(action))
+		{
+			RequestDispatcher dispatch=request.getRequestDispatcher("BookTicket.jsp");
+			dispatch.forward(request, response);
+		}*/
+		if("success".equals(action))
+		{
+			RequestDispatcher dispatch=request.getRequestDispatcher("Success.jsp");
+			dispatch.forward(request, response);
+		}
+		if("homePage".equals(action))
+		{
+			RequestDispatcher dispatch=request.getRequestDispatcher("UserMenu.jsp");
+			dispatch.forward(request, response);
+		}
 	}
-
 }
